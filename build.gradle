@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'com.ktb.deloop'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.ktb.deloop.Main'
+        )
+    }
+}
