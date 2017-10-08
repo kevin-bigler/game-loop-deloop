@@ -32,7 +32,7 @@ public class Game implements Runnable {
     }
 
     private void update(double dt) {
-
+        System.out.println("update called");
     }
 
     private void draw() {
