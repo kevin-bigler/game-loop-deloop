@@ -5,19 +5,20 @@ public class Game implements Runnable {
     private boolean running = false;
     private static final double MAX_DT = 3.0 / 60.0;
     private static final double MIN_DT = 1.0 / 60.0;
+    private static final double FPS_UPDATE_FREQ = 1.0;
     private static final long SLEEP_TIME = 1;
 
     @Override
     public void run() {
         running = true;
-        final double initialTime = currentTime();
         double lastTime = currentTime();
         double time = 0;
         double dt = 0;
+        double sleepStart = 0;
+        double lastFps = currentTime(); // when we record fps, 1x/sec
+        double durationSinceLastFps = 0;
         double fps = 0;
         double frames = 0;
-        double overallDuration = 0;
-        double sleepStart = 0;
 
         while (running) {
             // delta time (dt) calculation
@@ -27,7 +28,6 @@ public class Game implements Runnable {
 
             // limit the number of times we process per second
             while (dt < MIN_DT) {
-                System.out.println("need to sleep");
                 sleepStart = currentTime();
                 try {
                     Thread.sleep(SLEEP_TIME);
@@ -42,10 +42,14 @@ public class Game implements Runnable {
             }
 
             // fps calculation
-            overallDuration = currentTime() - initialTime;
             frames++;
-            fps = frames / overallDuration;
-            System.out.println("fps: " + fps);
+            durationSinceLastFps = currentTime() - lastFps;
+            if (durationSinceLastFps >= FPS_UPDATE_FREQ) {
+                fps = frames / durationSinceLastFps;
+                frames = 0;
+                lastFps = currentTime();
+                System.out.println("fps: " + fps);
+            }
 
             getInput();
             update(dt);
@@ -58,7 +62,7 @@ public class Game implements Runnable {
     }
 
     private void update(final double dt) {
-        System.out.println("update called, dt = " + dt);
+//        System.out.println("update called, dt = " + dt);
     }
 
     private void draw() {
