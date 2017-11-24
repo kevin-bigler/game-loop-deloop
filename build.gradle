@@ -5,6 +5,15 @@ targetCompatibility = 1.8
 
 group = 'com.ktb.deloop'
 
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.projectlombok:lombok:1.16.+'
+}
+
 jar {
     manifest {
         attributes(

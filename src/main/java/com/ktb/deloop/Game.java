@@ -1,89 +1,38 @@
 package com.ktb.deloop;
 
-public class Game implements Runnable {
-    private Thread thread;
-    private boolean running = false;
-    private static final double MAX_DT = 3.0 / 60.0;
-    private static final double MIN_DT = 1.0 / 60.0;
-    private static final double FPS_UPDATE_FREQ = 1.0;
-    private static final long SLEEP_TIME = 1;
+import com.ktb.deloop.model.GameLoopSettings;
+import com.ktb.deloop.service.GameLoop;
+import com.ktb.deloop.service.GameLoopRunner;
 
-    @Override
-    public void run() {
-        running = true;
-        double lastTime = currentTime();
-        double time = 0;
-        double dt = 0;
-        double sleepStart = 0;
-        double lastFps = currentTime(); // when we record fps, 1x/sec
-        double durationSinceLastFps = 0;
-        double fps = 0;
-        double frames = 0;
+import static com.ktb.deloop.constant.Constant.FPS_UPDATE_FREQ;
+import static com.ktb.deloop.constant.Constant.MAX_DT;
+import static com.ktb.deloop.constant.Constant.MIN_DT;
+import static com.ktb.deloop.constant.Constant.SLEEP_TIME;
 
-        while (running) {
-            // delta time (dt) calculation
-            time = currentTime();
-            dt = time - lastTime;
-            lastTime = time;
+/**
+ * TODO is this class necessary anymore? Repurpose it as the MAIN class, with a main() method? or phase it out?
+ */
+public class Game {
+    private final GameLoopRunner runner;
 
-            // limit the number of times we process per second
-            while (dt < MIN_DT) {
-                sleepStart = currentTime();
-                try {
-                    Thread.sleep(SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                dt += currentTime() - sleepStart;
-            }
-
-            if (dt > MAX_DT) {
-                dt = MAX_DT;
-            }
-
-            // fps calculation
-            frames++;
-            durationSinceLastFps = currentTime() - lastFps;
-            if (durationSinceLastFps >= FPS_UPDATE_FREQ) {
-                fps = frames / durationSinceLastFps;
-                frames = 0;
-                lastFps = currentTime();
-                System.out.println("fps: " + fps);
-            }
-
-            getInput();
-            update(dt);
-            draw();
-        }
-    }
-
-    private void getInput() {
-
-    }
-
-    private void update(final double dt) {
-//        System.out.println("update called, dt = " + dt);
-    }
-
-    private void draw() {
-
-    }
-
-    public double currentTime() {
-        return System.nanoTime() / 1.0E9;
+    public Game() {
+        final GameLoopSettings settings = GameLoopSettings.builder()
+                .minDt(MIN_DT)
+                .maxDt(MAX_DT)
+                .sleepTime(SLEEP_TIME)
+                .fpsUpdateFreq(FPS_UPDATE_FREQ)
+                .build();
+        final GameLoop gameLoop = (dt) -> {
+            System.out.println("Game Loop Run. dt = " + dt);
+        };
+        runner = new GameLoopRunner(settings, gameLoop);
     }
 
     public void start() {
-        thread = new Thread(this);
-        thread.start();
+        runner.start();
     }
 
     public void stop() {
-        running = false;
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        runner.stop();
     }
 }
