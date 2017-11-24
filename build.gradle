@@ -21,3 +21,6 @@ jar {
         )
     }
 }
+
+// TODO add a 'run' task
+// TODO maybe add a way to run using given configurations (ie changes which config yaml files to load)

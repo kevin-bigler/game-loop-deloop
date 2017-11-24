@@ -5,6 +5,7 @@ import com.ktb.deloop.model.GameLoopSettings;
 /**
  * Wraps a Game Loop, taking care of things like delays, frame time deltas, etc
  */
+// TODO separate the thread handling and runnable from this class
 public class GameLoopRunner implements Runnable {
     private final GameLoopSettings settings;
     private final GameLoop gameLoop;
