@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     compile 'org.projectlombok:lombok:1.16.+'
+    // TODO add junit and mockito. add unit tests
 }
 
 jar {
