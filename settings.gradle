@@ -1,3 +1,3 @@
 rootProject.name = 'game-loop-deloop'
-include 'hello-world'
+include 'lwjgl3-maven-gradle'
 
