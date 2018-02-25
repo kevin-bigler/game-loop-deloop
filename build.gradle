@@ -1,17 +1,7 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
-    }
-}
-
 apply plugin: 'java'
-apply plugin: 'com.github.johnrengelman.shadow'
-//apply plugin: 'application'
+apply plugin: 'application'
 
-//mainClassName = 'Main'
+mainClassName = 'com.ktb.deloop.Main'
 
 sourceCompatibility = 1.8
 
@@ -58,14 +48,14 @@ jar {
         )
     }
 
-//    from {
-//        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-//    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 task gameon(type: Exec) {
     workingDir "${buildDir}/libs"
-    commandLine 'java', '-jar', "${project.name}-all.jar"
+    commandLine 'java', '-jar', "${project.name}.jar"
     // java -jar build/libs/game-loop-deloop.jar
+    // TODO: maybe add a way to run using given configurations (ie changes which config yaml files to load)
 }
-// TODO: maybe add a way to run using given configurations (ie changes which config yaml files to load)
