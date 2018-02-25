@@ -17,6 +17,7 @@ project.ext.lwjglVersion = "3.1.6"
 
 dependencies {
     compile "org.lwjgl:lwjgl:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl-glfw:$lwjglVersion"
 
     compile 'org.projectlombok:lombok:1.16.+'
     // TODO: add junit and mockito. add unit tests
