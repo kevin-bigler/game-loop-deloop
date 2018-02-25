@@ -50,6 +50,7 @@ public class HelloWorldDeux {
 
         last = 0;
 
+        System.out.println("starting window loop");
         // Loop continuously and render and update
         while (!glfwWindowShouldClose(windowId))
         {
@@ -66,6 +67,8 @@ public class HelloWorldDeux {
             glfwPollEvents();
             glfwSwapBuffers(windowId);
         }
+
+        System.out.println("done with window loop");
     }
 
     public void initWindow() {

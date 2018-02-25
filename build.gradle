@@ -1,7 +1,17 @@
-apply plugin: 'java'
-apply plugin: 'application'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
 
-mainClassName = 'Main'
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+//apply plugin: 'application'
+
+//mainClassName = 'Main'
 
 sourceCompatibility = 1.8
 
@@ -15,10 +25,27 @@ repositories {
 
 project.ext.lwjglVersion = "3.1.6"
 
+import org.gradle.internal.os.OperatingSystem
+
+switch ( OperatingSystem.current() ) {
+    case OperatingSystem.WINDOWS:
+        project.ext.lwjglNatives = "natives-windows"
+        break
+    case OperatingSystem.LINUX:
+        project.ext.lwjglNatives = "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = "natives-macos"
+        break
+}
+
 dependencies {
     compile "org.lwjgl:lwjgl:${lwjglVersion}"
+    compile "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
     compile "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
     compile "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
 
     compile 'org.projectlombok:lombok:1.16.+'
     // TODO: add junit and mockito. add unit tests
@@ -31,14 +58,14 @@ jar {
         )
     }
 
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+//    from {
+//        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
 }
 
 task gameon(type: Exec) {
     workingDir "${buildDir}/libs"
-    commandLine 'java', '-jar', "${project.name}.jar"
+    commandLine 'java', '-jar', "${project.name}-all.jar"
     // java -jar build/libs/game-loop-deloop.jar
 }
 // TODO: maybe add a way to run using given configurations (ie changes which config yaml files to load)
