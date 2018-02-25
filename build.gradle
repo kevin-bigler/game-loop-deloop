@@ -18,6 +18,7 @@ project.ext.lwjglVersion = "3.1.6"
 dependencies {
     compile "org.lwjgl:lwjgl:${lwjglVersion}"
     compile "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-opengl:$lwjglVersion"
 
     compile 'org.projectlombok:lombok:1.16.+'
     // TODO: add junit and mockito. add unit tests
@@ -29,11 +30,15 @@ jar {
             'Main-Class': 'com.ktb.deloop.Main'
         )
     }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 task gameon(type: Exec) {
     workingDir "${buildDir}/libs"
-    commandLine 'java', '-jar', "${name}.jar"
+    commandLine 'java', '-jar', "${project.name}.jar"
     // java -jar build/libs/game-loop-deloop.jar
 }
 // TODO: maybe add a way to run using given configurations (ie changes which config yaml files to load)
