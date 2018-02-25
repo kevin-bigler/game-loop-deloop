@@ -24,12 +24,38 @@ controllers should normally transform input into an `Action`, and add to an `Act
 
 ---
 
+`InputHandler` &rarr; to convert actual system input to `InputEvent` special objects - dispatches. So InputHandler is **pub-sub** also! Its subscribers are
+generally Controllers. Make sure the subscribers have an **option to kill propagation** of an InputEvent (like you can do in js with event handlers)
+
+---
+
 `Director` &rarr; The `Director` is the only one who should be telling actors to do _anything_.  Other components 
 may make **suggestions** to the director, but the director gets the final say as to what happens.
 
 It probably makes sense to divide actors up under separate directors, all delegated by a main `LeadDirector` **composite**.
 
 Ex: `EnemyDirector`, `Player1Director`, `Player2Director`, `NpcDirector`, `VehiclesDirector`
+
+---
+
+`Producer` creates Directors, Actors, and Controllers, and is responsible for their life cycle (ie destroy them when appropriate also)
+
+---
+
+`MemorySupport` / `MemoryAssist` &amp; `ObjectPool`s &rarr; for allocating and reusing memory (ie FlyWeight pattern). Save in `ObjectPool`s (might generate uuid per pool so that
+separate consumers can request separate pools for objects of the same type, if they don't want to reuse an existing pool - just an option)
+Do by type:
+- allocate(Class or TypeReference, number of objects (optional - overload method));
+- ‎request(type) / request(type, number);
+- ‎release(obj) / release(collection of obj)
+- also could do checkIn(T), checkOut(): T instead / in addition (?), aka borrow(): T and return(T)
+
+It's up to consumers to initialize and reset / clear objects (OR MAYBE NOT -- typical object pool pattern places that responsibility on the ObjectPool itself!).
+Might send a supplier/function to say what to do to initialize / reset object upon creating the pool. `Initializer` & `Resetter` (?). Becomes members of the ObjectPool
+(ie dependencies)
+- ‎expiration on objects? Why or why not?
+- ‎poolSize vs both minPoolSize AND maxPoolSize
+-‎ object validation?
 
 ---
 
@@ -134,6 +160,12 @@ Ultimately controls what actors do or don't do (ie player jump, menu button acti
 -- OR prevents movement during a cutscene, grants invincibility by preventing taking damage, prevents jumping if hexed, etc)
 
 ```java
+interface Action<T extends Actor> {
+    void execute(T actor);
+}
+```
+
+```java
 interface Director<T extends Actor> {
     void queue(Action<? extends T> action);
     void processQueue();
@@ -142,9 +174,14 @@ interface Director<T extends Actor> {
 
 _It's implied that Directors are instantiated with an `Actor` subject_ under most circumstances.
 
+**Alternatively**
+
+Include `Actor` in the `queue()` method, so that a `Director` can be in charge of more than one `Actor` ***(probably the way to go)***
+
 ```java
-interface Action<T extends Actor> {
-    void execute(T actor);
+interface Director {
+    void <T extends Actor> queue(Action<? extends T> action, T actor);
+    void processQueue();
 }
 ```
 
