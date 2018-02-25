@@ -4,15 +4,34 @@
 
 `BobRoss` &rarr; in charge of drawing things to the window _(maybe `Artist` interface and BobRoss is one)_
 
+---
+
 `GameEventDispatcher` &rarr; **pub-sub** system. i.e. something says `EventDispatcher.subscribe(eventNameOrType, serviceWhoWantsToBeNotified);`
 
 `GameEventCoordinator` &rarr; part of the **pub-sub** system, but focuses on _using_ the dispatcher by setting up subscriptions. 
 In charge of setup. ie it's the one that calls `EventDispatcher.subscribe(...)`
 
+---
+
 `Controller` &rarr; accepts `ControllerInput` data and imposes actions on a subject based on the input.
 
 - Ex: `PlayerController` would make a player character do something based on receiving input
 - Ex: `CarController` would make a car do stuff upon receiving controller inputs
+
+controllers should normally transform input into an `Action`, and add to an `ActionQueue` _(aka "Command" and "CommandQueue")_
+
+** Queues can be tapped via a `QTapper` to be recorded. `QLoader` and `QReplay` can be used to replay a tapped (recorded) queue of `Action`s
+
+---
+
+`Director` &rarr; The `Director` is the only one who should be telling actors to do _anything_.  Other components 
+may make **suggestions** to the director, but the director gets the final say as to what happens.
+
+It probably makes sense to divide actors up under separate directors, all delegated by a main `LeadDirector` **composite**.
+
+Ex: `EnemyDirector`, `Player1Director`, `Player2Director`, `NpcDirector`, `VehiclesDirector`
+
+---
 
 ### Examples &mdash; Pub-Sub
 
