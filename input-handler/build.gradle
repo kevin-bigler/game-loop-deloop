@@ -10,5 +10,6 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit:junit:4.12'
+    compile 'org.projectlombok:lombok:1.16.+'
+    testCompile 'junit:junit:4.12'
 }
