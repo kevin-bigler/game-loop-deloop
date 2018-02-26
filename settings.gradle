@@ -1,4 +1,5 @@
 rootProject.name = 'game-loop-deloop'
 include 'on-set'
 include 'input-handler'
+include 'core'
 
