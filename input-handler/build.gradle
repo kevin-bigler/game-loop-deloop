@@ -11,5 +11,7 @@ repositories {
 
 dependencies {
     compile 'org.projectlombok:lombok:1.16.+'
+    compile project(':pub-sub')
+
     testCompile 'junit:junit:4.12'
 }
