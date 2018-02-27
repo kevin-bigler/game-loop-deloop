@@ -73,7 +73,7 @@ Include `Actor` in the `queue()` method, so that a `Director` can be in charge o
 
 ```java
 interface Director {
-    void <T extends Actor> queue(Action<? extends T> action, T actor);
+    <T extends Actor> void queue(Action<? extends T> action, T actor);
     void processQueue();
 }
 ```
@@ -155,7 +155,7 @@ class GenericDirector<T> implements Director<T> {
     }
 
     @Override
-    public void queue(final Action<? extends T> action) {
+    public <T extends Actor> void queue(final Action<? extends T> action) {
         queue.add(action);
     }
 
