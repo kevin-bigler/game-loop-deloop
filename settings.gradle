@@ -3,4 +3,6 @@ include 'on-set'
 include 'input-handler'
 include 'core'
 include 'pub-sub'
+include 'level'
+include 'menu'
 

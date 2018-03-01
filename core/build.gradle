@@ -36,5 +36,6 @@ dependencies {
     compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
 
     compile 'org.projectlombok:lombok:1.16.+'
+    compile project(':pub-sub')
     // TODO: add junit and mockito. add unit tests
 }
