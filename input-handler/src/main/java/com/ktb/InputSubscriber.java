@@ -3,5 +3,5 @@ package com.ktb;
 /**
  * Dun-dun-dun!
  */
-public interface InputSubscriber extends Subscriber<InputEvent, Object> {
+public interface InputSubscriber extends Subscriber<InputEvent, InputEventData> {
 }
