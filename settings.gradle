@@ -5,4 +5,5 @@ include 'core'
 include 'pub-sub'
 include 'level'
 include 'menu'
+include 'physics'
 

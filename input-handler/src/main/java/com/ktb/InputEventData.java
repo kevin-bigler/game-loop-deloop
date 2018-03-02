@@ -12,5 +12,9 @@ import java.util.Collection;
 @Value
 @AllArgsConstructor
 public class InputEventData {
+    /*
+        TODO: should player1 vs player2 be defined as separate collections? or different buttons? different buttons
+        would make controllers less portable so probably collections...
+     */
     Collection<ButtonInput> buttons;
 }
