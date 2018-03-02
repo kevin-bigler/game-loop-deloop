@@ -2,6 +2,8 @@ package com.ktb;
 
 // TODO
 public class LevelOne implements Level {
+    private final Producer sceneOneProducer = new LevelOneSceneOneProducer();
+
     @Override
     public void init() {
 
